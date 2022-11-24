@@ -11,7 +11,7 @@ public class WebDriverService {
 	WebDriver driver = null; //Interface 
 
 	public WebDriverService() {
-		System.setProperty("webdriver.chrome.driver", Constants.PROJECT_PATH + "/resources/bin/chromedriver"); //sets the path for chrome driver in the given sys property name
+		System.setProperty("webdriver.chrome.driver", Constants.CHROME_DRIVER_PATH); //sets the path for chrome driver in the given sys property name
 		
 		ChromeOptions chromeOptions = new ChromeOptions();
 		chromeOptions.setHeadless(true); // It won't show the browser window(Hide the head)
