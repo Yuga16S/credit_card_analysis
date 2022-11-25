@@ -1,5 +1,0 @@
-3:student
-2:no fee
-3:groceries
-1:airmiles
-1:air miles
