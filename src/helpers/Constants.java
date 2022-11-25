@@ -10,4 +10,5 @@ public class Constants {
 	
 	public static final String CHROME_DRIVER_PATH = Constants.PROJECT_PATH + "/resources/bin/chromedriver-yuga";
 	
+	public static final String FILE_WRITER_PATH = Constants.PROJECT_PATH + "/resources/keywords.txt/";
 }
