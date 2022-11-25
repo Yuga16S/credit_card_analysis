@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * Holds all the details of a credit card.
+ * @author yugapriya
+ */
 public class CreditCard { 
 	
 	private String name;

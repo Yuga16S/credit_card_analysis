@@ -1,5 +1,6 @@
 package services;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +11,10 @@ import java.util.Map;
 import helpers.Constants;
 import model.CreditCard;
 
+/**
+ * Service to crawl and download credit card web pages.
+ * @author yugapriya
+ */
 public class WebCrawler {
 	
 	private static final String WEBPAGES_DIR = Constants.PROJECT_PATH + "/resources/webpages/";
@@ -18,6 +23,10 @@ public class WebCrawler {
 
 	public static Map<CreditCard, List<String>> crawlAndDownload(List<CreditCard> creditCards) throws IOException {
 		Map<CreditCard, List<String>> result = new HashMap<>();
+		
+		// Deletes all the old files.
+		deleteFilesInDirectory(WEBPAGES_DIR);
+		
 		for (CreditCard creditCard : creditCards) {
 			String specifiCreditCardLink = creditCard.getLink();
 			String fileName = downloadPage(webDriverService, specifiCreditCardLink);
@@ -57,6 +66,16 @@ public class WebCrawler {
 		}
 		String constructedFileName = str.toString();
 		return constructedFileName;
+	}
+	
+	private static void deleteFilesInDirectory(String directory) {
+		File directoryFile = new File(directory);
+		if (!directoryFile.isDirectory()) {
+			throw new RuntimeException("Not a directory: " + directory);
+		}
+		for (File fileInsideDirectory : directoryFile.listFiles()) {
+			fileInsideDirectory.delete();
+		}
 	}
 
 }

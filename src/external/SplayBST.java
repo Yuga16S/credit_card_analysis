@@ -30,15 +30,6 @@ public class SplayBST<Key extends Comparable<Key>, Value>  {
         }
     }
     
-    //yuga
-    public Key getRootKey() {
-    	if ( root == null) {
-    		return null;
-    	} else {
-    		return root.key;
-    	}
-    }
-
     public boolean contains(Key key) {
         return get(key) != null;
     }
@@ -46,6 +37,10 @@ public class SplayBST<Key extends Comparable<Key>, Value>  {
     // return value associated with the given key
     // if no such value, return null
     public Value get(Key key) {
+    	if (isEmpty()) {
+    		return null;
+    	}
+    	
         root = splay(root, key);
         int cmp = key.compareTo(root.key);
         if (cmp == 0) return root.value;
@@ -103,7 +98,7 @@ public class SplayBST<Key extends Comparable<Key>, Value>  {
      * child.
      */
     public void remove(Key key) {
-        if (root == null) return; // empty tree
+        if (isEmpty()) return; // added by @author yugapriya
 
         root = splay(root, key);
 
@@ -217,6 +212,20 @@ public class SplayBST<Key extends Comparable<Key>, Value>  {
         x.left = h;
         return x;
     }
-
+    
+    
+    // The following methods are added by @author yugapriya
+    
+    public Key getRootKey() {
+    	if ( root == null) {
+    		return null;
+    	} else {
+    		return root.key;
+    	}
+    }
+    
+    public boolean isEmpty() {
+    	return root == null;
+    }
 
 }

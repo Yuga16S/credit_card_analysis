@@ -1,22 +1,20 @@
 package services;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
 
 import external.SplayBST;
 import helpers.Constants;
-import model.KeyWord;
 
+/**
+ * Service to get/save keywords from "keywords.txt" and to get the last searched keyword with frequency.
+ * @author yugapriya
+ */
 public class KeyWordService {
 	
 	// reads keywords.txt and returns a map of words by their frequency
@@ -76,6 +74,9 @@ public class KeyWordService {
 	public static String getLastSearchedKeywordWithFrequency() {
 		SplayBST<String, Integer> keywordFrequencyMap = getKeywords();
 		String lastSearchedKeyWord = keywordFrequencyMap.getRootKey();
+		if (keywordFrequencyMap.isEmpty()) {
+			return "";
+		}
 		int frequency = keywordFrequencyMap.get(lastSearchedKeyWord);
 		return lastSearchedKeyWord + "(" + frequency + ")";
 	}

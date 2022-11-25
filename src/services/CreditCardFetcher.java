@@ -12,6 +12,10 @@ import model.CreditCard;
 
 import org.jsoup.nodes.Document;
 
+/**
+ * This service scrapes the "all credit cards" page
+ * @author yugapriya
+ */
 public class CreditCardFetcher {
 	
 	public static List<CreditCard> getAllCreditCards(String htmlContent) {

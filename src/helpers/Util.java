@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Class with helper methods that could be used anywhere in the project
+ * @author yugapriya
+ */
 public class Util {
 	
 	public static <K> Map<Integer, List<K>> getInvertedIndexMap(Map<K, Integer> inputMap) {

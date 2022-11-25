@@ -1,3 +1,5 @@
-2:travel
-6:groceries
-4:airmiles
+3:student
+2:no fee
+3:groceries
+1:airmiles
+1:air miles

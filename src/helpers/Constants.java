@@ -1,5 +1,9 @@
 package helpers;
 
+/**
+ * Helper class to store all the constants used in this project
+ * @author yugapriya
+ */
 public class Constants {
 
 	public static final String PROJECT_PATH = System.getProperty("user.dir");
