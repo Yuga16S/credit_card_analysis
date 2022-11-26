@@ -46,7 +46,8 @@ public class MainApplication {
 			sb.append("\n| Low Interest                                             |");
 			sb.append("\n| AIR MILES                                                |");
 			sb.append("\n| Student                                                  |");
-			sb.append("\n| Lifestyle & Travel                                       |");
+			sb.append("\n| Lifestyle                                                |");
+			sb.append("\n| Travel                                                   |");
 			sb.append("\n|__________________________________________________________|");
 			sb.append("\n\nRecently searched keyword: " + KeyWordService.getLastSearchedKeywordWithFrequency());
 			System.out.println(sb.toString());
