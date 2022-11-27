@@ -15,11 +15,11 @@ public class MainApplication {
 	
 	public static void main(String[] args) throws IOException {
 		
-		WebDriverService webDriverService = new WebDriverService();
-		
 		// Welcome message
 		System.out.println("Welcome to your personalized credit card analyser!");
-		System.out.println("Please wait while we fetch the information ...");
+		System.out.println("Please wait while we fetch the information ...\n\n");
+		
+		WebDriverService webDriverService = new WebDriverService();
 		
 		String allCreditCardsPageHtml = webDriverService.getPageContent(Constants.CREDIT_CARDS_URL);
 		List<CreditCard> creditCards = CreditCardFetcher.getAllCreditCards(allCreditCardsPageHtml); 
