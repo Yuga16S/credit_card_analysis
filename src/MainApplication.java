@@ -23,7 +23,7 @@ public class MainApplication {
 		
 		WebDriverService webDriverService = new WebDriverService();
 		
-		String allCreditCardsPageHtml = webDriverService.getPageContent(Constants.CREDIT_CARDS_URL);
+		String allCreditCardsPageHtml = webDriverService.getPageContent(Constants.CREDIT_CARDS_URL); // allCreditCardsPageHtml  holds the page source content
 		List<CreditCard> creditCards = CreditCardFetcher.getAllCreditCards(allCreditCardsPageHtml); 
 		
 		@SuppressWarnings("unused") // To be used for page ranking

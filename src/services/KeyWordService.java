@@ -59,7 +59,7 @@ public class KeyWordService {
 			
 		}
 		
-		FileWriter fileWriter = new FileWriter(Constants.FILE_WRITER_PATH, false);
+		FileWriter fileWriter = new FileWriter(Constants.FILE_WRITER_PATH, false); // append = false
 		while (keywordFrequencyMap.getRootKey() != null) {
 			String rootKey = keywordFrequencyMap.getRootKey();
 			Integer rootValue = keywordFrequencyMap.get(rootKey);
