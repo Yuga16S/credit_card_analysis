@@ -46,91 +46,102 @@ public class CreateInvertedIndex {
 		}
 	}
 
-	 private void createFileindex(int file_index) throws IOException
-	    {
-	        BufferedReader reader = new BufferedReader(new FileReader(fileArray[file_index]));  // open reader
+	public static void createInvertedIndexMap() throws IOException {
+		ArrayList<String> FileNameArray = new ArrayList<String>();
 
-	        
-	        int line_num = 0;  // line number in which word is present
-	        int word_num;// word number
+		String textFilesDirectoryPath = Constants.PROJECT_PATH + "/resources/textFiles/"; // directory path to text
+																							// files
 
-	        
+		File textFilesDirectory = new File(textFilesDirectoryPath);// Creating file object
 
-	        for (String line = reader.readLine(); line != null; line = reader.readLine())   // reads file by line by line
-	        {
-	            line_num++;
-	            word_num = 0;
+		File[] listOfAllHtmlFiles = textFilesDirectory.listFiles(); // returns files in directory
+		int i = 0;
+		// iterates through list of files in the directory
+		for (File file : listOfAllHtmlFiles) {
+			String fileNameArray2 = file.getPath();
+			FileNameArray.add(fileNameArray2.toString());
+			i = i + 1;
 
-	            String local = "";
-	            for (String word : line.split(REGEX))   // split lines by word by word
-	            {
-	                word = word.trim().toLowerCase();    // removes whitespaces and converts it into lower case
+		}
+		CreateInvertedIndex index = new CreateInvertedIndex(FileNameArray); // Creates CreateInvertedIndex object
+		String[] inpArray = { "cashback", "Low interest", "Airmiles", "mastercard" };
+		for (String inp : inpArray) {
+			index.findIndex(inp);
+		}
+		// index.findIndexForTwoStrings("student", "mastercard");
+	}
 
-	                if (word.length() > 1)            // removes whitespaces and converts it into lower case
-	                {
-	                    word_num++;
+	private void createFileindex(int file_index) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(fileArray[file_index])); // open reader
 
-	                    if (word.equalsIgnoreCase("no") || word.equalsIgnoreCase("low")) {
-							local = word;
-							continue;
-						} else if ((word.equalsIgnoreCase("fee") && local.equalsIgnoreCase("no"))|| (word.equalsIgnoreCase("interest") && local.equalsIgnoreCase("low"))) {
-							local += word;
+		int line_num = 0; // line number in which word is present
+		int word_num; // word number
+
+		for (String line = br.readLine(); line != null; line = br.readLine()) // read file, line by line
+		{
+			line_num++;
+			word_num = 0;
+			String local = "";
+			for (String word : line.split(REGEX)) // split line, word by word
+			{
+				word = word.trim().toLowerCase(); // removes whitespaces and converts it into lower case
+
+				if (word.length() > 1) // ignores any whitespaces, words with single characters
+				{
+					word_num++;
+
+					if (word.equalsIgnoreCase("no") || word.equalsIgnoreCase("low")) {
+						local = word;
+						continue;
+					} else if ((word.equalsIgnoreCase("fee") && local.equalsIgnoreCase("no"))
+							|| (word.equalsIgnoreCase("interest") && local.equalsIgnoreCase("low"))) {
+						local += word;
+					}
+					// checks for existing word in hashMap
+					LinkedList<Posting> value = word.equalsIgnoreCase("fee") || word.equalsIgnoreCase("interest")
+							? hashMap.get(local)
+							: hashMap.get(word);
+
+					if (value == null) {
+						// if word does not exist in hashMap:
+						value = new LinkedList<Posting>(); // create a new word
+						if (word.equalsIgnoreCase("fee") || word.equalsIgnoreCase("interest")) {
+							hashMap.put(local, value); // and add it to hashMap
+						} else {
+							hashMap.put(word, value); // and add it to hashMap
 						}
-	                 // checks for existing word in hashMap
-	                    LinkedList<Posting> value = hashMap.get(word);
-	                    if (value == null)
-	                    {
-	                      // if word does not exist in hashMap
-	                        value = new LinkedList<Posting>();  /// create a new word
-	                        if (word.equalsIgnoreCase("fee") || word.equalsIgnoreCase("interest")) {
-								hashMap.put(local, value); // add to hashMap
-							} else {
-								hashMap.put(word, value); // add to hashMap
-							}
 
+						// checks for existing posting in word
+						int index = value.indexOf(new Posting(file_index));
+						Posting posting;
+						if (index == -1) { // if posting does not exist in word:
+							posting = new Posting(file_index); // create a new posting
+							value.add(posting); // adds posting to word
+						} else
+							posting = value.get(index);
 
-	                    }
+						// adds position i.e line number and word number to posting
+						posting.addWordPosition(line_num, word_num);
+					}
+				}
+			}
+		}
+		br.close();
 
-	                 // checks for existing posting in word
-	                    int index = value.indexOf(new Posting(file_index));
-	                    Posting posting;
-	                    if (index == -1) // if posting does not exist in word
-	                    {                                       
-	                        posting = new Posting(file_index);     // create a new posting
-	                        value.add(posting);                // adds posting to word
-	                    }
-	                    else
-	                        posting = value.get(index);
+	}
 
-	                    
-	                    posting.addWordPosition(line_num, word_num);
-	                }
-	            }
-	        }
-
-	        reader.close();     // close reader
-
-	        //if you want you can file names
-	        //System.out.println("\t File: \"" + fileArray[file_index].getName() + "\"");
-	    }
-
-
-	 //Searches given input string
 	public void findIndex(String word) {
 
-		HashMap<String, ArrayList<WordFrequency>>  finalFrequencyMap = new HashMap<String, ArrayList<WordFrequency>>();
-
-		
 		word = word.trim().toLowerCase(); // removes whitespaces between words and converts them into lower case
 
+		HashMap<String, ArrayList<WordFrequency>> finalFrequencyMap = new HashMap<String, ArrayList<WordFrequency>>();
 
 		LinkedList<Posting> value = hashMap.get(word); // checks word in hashMap
 		if (value != null) // word found in hashMap
 		{
 			LinkedList<Posting> postingList = new LinkedList<Posting>(value);
 			Collections.sort(postingList); // sorting postingList by relevance
-			
-			int num=0;
+
 			for (Posting posting : postingList) {
 				// output results
 				String fileName = fileArray[posting.getFileIndex()].getName();
@@ -167,8 +178,50 @@ public class CreateInvertedIndex {
 			return;
 		}
 
-		System.out.println("Word not found"); // print when no word found
-		
+		System.out.println("Word not found"); // no result
 	}
 
+	public void findIndexForTwoStrings(String word1, String word2) {
+		System.out.println("Searched: \"" + word1 + "\"" + " AND \"" + word2 + "\"");
+
+		word1 = word1.trim().toLowerCase(); // removes whitespaces between words and converts them into lower case
+
+		HashMap<String, ArrayList<WordFrequency>> finalMap = new HashMap<String, ArrayList<WordFrequency>>();
+		// Iterator
+		Iterator<Entry<String, ArrayList<WordFrequency>>> new_Iterator = finalMap.entrySet().iterator();
+
+		LinkedList<Posting> value1 = hashMap.get(word1); // lookup word1 in hashMap
+		if (value1 != null) // word1 found in hashMap
+		{
+			word2 = word2.trim().toLowerCase(); // normalize word2
+
+			LinkedList<Posting> value2 = hashMap.get(word2); // lookup word2 in hashMap
+			if (value2 != null) // word2 found in hashMap
+			{
+				LinkedList<Posting> maxValue = (value1.size() >= value2.size()) ? value1 : value2;
+				LinkedList<Posting> minValue = (value1.size() < value2.size()) ? value1 : value2;
+				LinkedList<Posting> postingList = new LinkedList<Posting>(maxValue);
+
+				if ((maxValue.size() - minValue.size()) > 0) {
+					LinkedList<Posting> temp = new LinkedList<Posting>(maxValue);
+					for (Posting posting : minValue)
+						temp.remove(posting);
+
+					for (Posting posting : temp)
+						postingList.remove(posting); // AND
+				}
+
+				int num = 0;
+
+				for (Posting posting : postingList) {
+
+					System.out.println("\t" + (++num) + "\t File: \"" + fileArray[posting.getFileIndex()] + "\"\n");
+				}
+
+				return;
+			}
+		}
+
+		System.out.println("Word not found"); // prints when word is not found
+	}
 }

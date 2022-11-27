@@ -44,7 +44,7 @@ public class Posting implements Comparable<Posting> {
 
 	@Override
 	public boolean equals(Object o) {
-		
+		// used by indexOf() method
 		if (o instanceof Posting) {
 			Posting other = (Posting) o;
 			return other.file_index == this.file_index;
@@ -66,7 +66,7 @@ public class Posting implements Comparable<Posting> {
 
 		@Override
 		public String toString() {
-			
+			// used by getPositionList() method
 			return "[" + line_num + "-" + word_num + "]";
 		}
 	}

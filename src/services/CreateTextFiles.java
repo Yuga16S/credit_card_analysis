@@ -4,9 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import helpers.Constants;
 
 /**
@@ -35,7 +32,7 @@ public class CreateTextFiles {
 				String fileName = file.getName();
 				processHtmltoText(file.getPath(), fileName.substring(0, fileName.lastIndexOf(".")),
 						textFilesDirectoryPath); // calls processFile method with file details as parameters
-				
+				System.out.println(file.getName() + ".txt");
 			}
 
 		} catch (Exception io) {
@@ -61,28 +58,22 @@ public class CreateTextFiles {
 		}
 
 	}
-	public static void createInvertedIndexMap() throws IOException {
-		ArrayList<String> FileNameArray = new ArrayList<String>();
-
-		String textFilesDirectoryPath = Constants.PROJECT_PATH + "/resources/textFiles/"; // directory path to text
-																							// files
-
-		File textFilesDirectory = new File(textFilesDirectoryPath);// Creating file object
-
-		File[] listOfAllHtmlFiles = textFilesDirectory.listFiles(); // returns files in directory
-		int i = 0;
-		// iterates through list of files in the directory
-		for (File file : listOfAllHtmlFiles) {
-			String fileNameArray2 = file.getPath();
-			FileNameArray.add(fileNameArray2.toString());
-			i = i + 1;
-
-		}
-		CreateInvertedIndex index = new CreateInvertedIndex(FileNameArray); // Creates CreateInvertedIndex object
-		String[] inpArray = { "bmo","nofee","low interest"};
-		for (String inp : inpArray) {
-			index.findIndex(inp);
-		}
-	}
-
+	/*
+	 * public static void createInvertedIndexMap() throws IOException {
+	 * ArrayList<String> FileNameArray = new ArrayList<String>();
+	 * 
+	 * String allTextFilesDirLocStr = Constants.PROJECT_PATH +
+	 * "/resources/textFiles/";
+	 * 
+	 * File allFilesDirLoc = new File(allTextFilesDirLocStr);
+	 * 
+	 * File[] listOfAllHtmlFiles = allFilesDirLoc.listFiles(); int i=0; for (File
+	 * file : listOfAllHtmlFiles) { String fileNameArray2 = file.getPath();
+	 * FileNameArray.add(fileNameArray2.toString()); i=i+1;
+	 * 
+	 * } CreateInvertedIndex index = new CreateInvertedIndex(FileNameArray);
+	 * String[] queryArray = {"cashback", "Low interest", "Airmiles", "mastercard"};
+	 * for (String query : queryArray) { index.queryIndex(query); } //
+	 * index.queryIndexAND("student", "mastercard"); }
+	 */
 }
