@@ -10,7 +10,6 @@ import services.WebDriverService;
 import services.CreditCardFetcher;
 import services.KeyWordService;
 import services.WebCrawler;
-import services.CreateInvertedIndex;
 import services.CreateTextFiles;
 
 public class MainApplication {

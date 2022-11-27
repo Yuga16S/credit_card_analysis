@@ -7,12 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import helpers.Constants;
 import model.Posting;
 import model.WordFrequency;
 
@@ -130,7 +126,6 @@ public class CreateInvertedIndex {
 			LinkedList<Posting> postingList = new LinkedList<Posting>(value);
 			Collections.sort(postingList); // sorting postingList by relevance
 			
-			int num=0;
 			for (Posting posting : postingList) {
 				// output results
 				String fileName = fileArray[posting.getFileIndex()].getName();
