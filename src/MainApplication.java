@@ -67,7 +67,7 @@ public class MainApplication {
 			
 			// riteesh code will execute to create text files from html files and store them in resources -> TextFiles
 			CreateTextFiles.createFiles(); // function to create text files
-			CreateInvertedIndex.createInvertedIndexMap(); // function to create inverted frequency map
+			CreateTextFiles.createInvertedIndexMap(); // function to create inverted frequency map
 			
 			System.out.println("Do you want to start over? (Please press y to continue)");
 			String response = scanner.nextLine();
