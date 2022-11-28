@@ -34,8 +34,9 @@ public class WebDriverService {
 		driver = new ChromeDriver(chromeDriverService, chromeOptions);
 	}
 	
+	//Uses the credit card page's url
 	public String getPageContent(String url) {
-		driver.get(url);
-		return driver.getPageSource();
+		driver.get(url); //get() - loads a new webpage in current browser widnow, it uses HTTP get operation/
+		return driver.getPageSource(); //returns html content
 	}
 }

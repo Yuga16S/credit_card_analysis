@@ -87,5 +87,6 @@
 	<classpathentry kind="lib" path="resources/lib/selenium-support-4.6.0-sources.jar"/>
 	<classpathentry kind="lib" path="resources/lib/selenium-support-4.6.0.jar"/>
 	<classpathentry kind="lib" path="resources/lib/slf4j-api-2.0.3.jar"/>
+	<classpathentry kind="lib" path="resources/lib/slf4j-simple-2.0.5.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

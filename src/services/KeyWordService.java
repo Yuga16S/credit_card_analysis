@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
 import external.SplayBST;
 import helpers.Constants;
@@ -29,12 +30,14 @@ public class KeyWordService {
 			System.out.println("File not found " + keywordsFile.getName());
 			return keywordFrequencyMap;
 		}
-		List<String> lines = new ArrayList<>();
+		
+		Stack<String> lines = new Stack<>();
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
-			lines.add(0, line);
+			lines.add(line);
 		}
-		for (String line : lines) {
+		while (! lines.isEmpty()) {
+			String line = lines.pop();
 			String[] lineParts = line.split(":");
 			String word = lineParts[1];
 			int frequency = Integer.parseInt(lineParts[0]);
@@ -59,7 +62,7 @@ public class KeyWordService {
 			
 		}
 		
-		FileWriter fileWriter = new FileWriter(Constants.FILE_WRITER_PATH, false);
+		FileWriter fileWriter = new FileWriter(Constants.FILE_WRITER_PATH, false); // append = false
 		while (keywordFrequencyMap.getRootKey() != null) {
 			String rootKey = keywordFrequencyMap.getRootKey();
 			Integer rootValue = keywordFrequencyMap.get(rootKey);
