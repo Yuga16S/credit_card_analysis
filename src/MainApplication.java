@@ -34,7 +34,6 @@ public class MainApplication {
 		String allCreditCardsPageHtml = webDriverService.getPageContent(Constants.CREDIT_CARDS_URL); // allCreditCardsPageHtml  holds the page source content
 		List<CreditCard> creditCards = CreditCardFetcher.getAllCreditCards(allCreditCardsPageHtml); 
 		
-		@SuppressWarnings("unused") // To be used for page ranking
 		Map<CreditCard, List<String>> creditCardPagesMap = WebCrawler.crawlAndDownload(creditCards);
 		
 		Scanner scanner = new Scanner(System.in);
@@ -48,7 +47,7 @@ public class MainApplication {
 			StringBuilder sb = new StringBuilder();
 			sb.append("\n\n\nNot sure what to choose ?");
 			sb.append("\nYou can type in what you are looking for and we'll help you find the credit card for you.\n\n");
-			sb.append("\n ________SOME COMMON KEYWORDS______");
+			sb.append("\n ________SOME COMMON KEYWORDS______________________________");
 			sb.append("\n|                                                          |");
 			sb.append("\n| Cash Back                                                |");
 			sb.append("\n| Groceries                                                |");
@@ -58,7 +57,7 @@ public class MainApplication {
 			sb.append("\n| Student                                                  |");
 			sb.append("\n| Lifestyle                                                |");
 			sb.append("\n| Travel                                                   |");
-			sb.append("\n|____________________|");
+			sb.append("\n|__________________________________________________________|");
 			sb.append("\n\nRecently searched keyword: " + KeyWordService.getLastSearchedKeywordWithFrequency());
 			System.out.println(sb.toString());
 			
