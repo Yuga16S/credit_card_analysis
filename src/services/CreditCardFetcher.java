@@ -29,7 +29,6 @@ public class CreditCardFetcher {
 			}
 			CreditCard card = new CreditCard(element.text(), hyperLink);
 			creditCards.add(card);
-			
 		}
 		return creditCards;
 	}

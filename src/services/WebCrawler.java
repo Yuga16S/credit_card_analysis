@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import helpers.Constants;
 import model.CreditCard;
 
@@ -22,21 +27,59 @@ public class WebCrawler {
 	private static WebDriverService webDriverService = new WebDriverService();
 
 	public static Map<CreditCard, List<String>> crawlAndDownload(List<CreditCard> creditCards) throws IOException {
-		Map<CreditCard, List<String>> result = new HashMap<>();
+		final int INITIAL_CRAWL_DEPTH = 0;
+		
+		Map<CreditCard, List<String>> crawlResult = new HashMap<>();
 		
 		// Deletes all the old files.
 		deleteFilesInDirectory(WEBPAGES_DIR);
 		
 		for (CreditCard creditCard : creditCards) {
 			String specifiCreditCardLink = creditCard.getLink();
-			String fileName = downloadPage(webDriverService, specifiCreditCardLink);
-			List<String> fileNames = new ArrayList<>();
-			fileNames.add(fileName);
-			
-			//TODO: DEEP SEARCH
-			result.put(creditCard, fileNames);
+			crawlAndDownload(creditCard, specifiCreditCardLink, crawlResult, INITIAL_CRAWL_DEPTH);
 		}
-		return result;
+		return crawlResult;
+	}
+	
+	public static void crawlAndDownload(CreditCard creditCard, String sourceLink, Map<CreditCard, List<String>> crawlResult, int crawledDepth) throws IOException {
+		String fileName = downloadPage(webDriverService, sourceLink); // downloads page content of sourceLink and puts it in a file whose name is returned
+		String htmlFileName = fileName + ".html";
+		
+		List<String> fileNames = crawlResult.get(creditCard);
+		if (fileNames == null) {
+			fileNames = new ArrayList<String>();
+		}
+		fileNames.add(fileName);
+		crawlResult.put(creditCard, fileNames);
+		
+		crawledDepth++; // incrementing crawled depth after downloading the file
+		
+		if (Constants.CRAWLING_DEPTH.equals(crawledDepth)) {
+			return; // achieved the required crawl depth. 
+		}
+		
+		List<String> linksInFile = extractLinks(new File(WEBPAGES_DIR + htmlFileName));
+		for (String linkInFile : linksInFile) {
+			try {
+				crawlAndDownload(creditCard, linkInFile, crawlResult, crawledDepth);
+			} catch (Exception e) {
+				// ignore invalid links (the page may contain some href tags for telephone numbers or email id)
+			}
+		}
+	}
+	
+	private static List<String> extractLinks(File htmlFile) throws IOException {
+		List<String> links = new ArrayList<>();
+		Document document = Jsoup.parse(htmlFile); // parses the input HTML into a new Document
+		Elements anchorTagElements = document.select("a");
+		for(Element element : anchorTagElements) {
+			String url = element.attr("href");
+			if (! url.startsWith("http")) { // The site uses relative url hence we are making it complete.
+				url = (Constants.DOMAIN + url);
+			}
+			links.add(url);
+		}
+		return links;
 	}
 	
 	private static String downloadPage(WebDriverService webDriverService, String url) throws IOException {
