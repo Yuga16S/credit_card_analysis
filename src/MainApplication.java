@@ -9,7 +9,6 @@ import java.util.Scanner;
 import helpers.Constants;
 import helpers.Util;
 import model.CreditCard;
-import model.WordFrequency;
 import services.WebDriverService;
 import services.CreditCardFetcher;
 import services.CreditCardRanking;
@@ -80,7 +79,6 @@ public class MainApplication {
 					 isInputValid = true;
 					 KeyWordService.saveKeywords(Util.listify(inputKeyWordsByUser));
 				}
-				word++;
 			}while(!isInputValid);
 							  
 				// riteesh code will execute to create text files from html files and store them in resources -> TextFiles
@@ -183,7 +181,7 @@ public class MainApplication {
 	{
 		for (int i = 0; i < str.length; i++) {
 			String string = str[i];
-			if(!(string!= null && !string.equalsIgnoreCase("") && (string.matches("^[a-zA-Z]$") || string.matches("^[a-zA-Z_ ]$"))))
+			if(!(string!= null && !string.equalsIgnoreCase("") && (string.matches("^[a-zA-Z]*$") || string.matches("^[a-zA-Z_ ]*$"))))
 				return false;	
 				
 		}

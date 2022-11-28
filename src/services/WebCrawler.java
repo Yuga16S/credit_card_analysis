@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -35,13 +36,18 @@ public class WebCrawler {
 		deleteFilesInDirectory(WEBPAGES_DIR);
 		
 		for (CreditCard creditCard : creditCards) {
+			HashSet<String> visitedUrls = new HashSet<>();
 			String specifiCreditCardLink = creditCard.getLink();
-			crawlAndDownload(creditCard, specifiCreditCardLink, crawlResult, INITIAL_CRAWL_DEPTH);
+			crawlAndDownload(creditCard, specifiCreditCardLink, crawlResult, visitedUrls, INITIAL_CRAWL_DEPTH);
 		}
 		return crawlResult;
 	}
 	
-	public static void crawlAndDownload(CreditCard creditCard, String sourceLink, Map<CreditCard, List<String>> crawlResult, int crawledDepth) throws IOException {
+	public static void crawlAndDownload(CreditCard creditCard, String sourceLink, Map<CreditCard, List<String>> crawlResult, HashSet<String> visitedUrls, int crawledDepth) throws IOException {
+		if (visitedUrls.contains(sourceLink)) {
+			return; // this url has already been visited for this credit card
+		}
+		
 		String fileName = downloadPage(webDriverService, sourceLink); // downloads page content of sourceLink and puts it in a file whose name is returned
 		String htmlFileName = fileName + ".html";
 		
@@ -51,6 +57,7 @@ public class WebCrawler {
 		}
 		fileNames.add(fileName);
 		crawlResult.put(creditCard, fileNames);
+		visitedUrls.add(sourceLink);
 		
 		crawledDepth++; // incrementing crawled depth after downloading the file
 		
@@ -61,7 +68,7 @@ public class WebCrawler {
 		List<String> linksInFile = extractLinks(new File(WEBPAGES_DIR + htmlFileName));
 		for (String linkInFile : linksInFile) {
 			try {
-				crawlAndDownload(creditCard, linkInFile, crawlResult, crawledDepth);
+				crawlAndDownload(creditCard, linkInFile, crawlResult, visitedUrls, crawledDepth);
 			} catch (Exception e) {
 				// ignore invalid links (the page may contain some href tags for telephone numbers or email id)
 			}

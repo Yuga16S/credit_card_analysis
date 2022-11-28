@@ -22,7 +22,7 @@ public class CreditCardRanking {
 				minFrequency = freqList.get(0).getFrequency();
 				finalCreditCard.add(key);
 			}
-	}
+		}
 
 		return finalCreditCard;
 	}

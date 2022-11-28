@@ -36,7 +36,7 @@ public class WebDriverService {
 	
 	//Uses the credit card page's url
 	public String getPageContent(String url) {
-		driver.get(url); //get() - loads a new webpage in current browser widnow, it uses HTTP get operation/
+		driver.get(url); //get() - loads a new webpage in current browser window, it uses HTTP get operation/
 		return driver.getPageSource(); //returns html content
 	}
 }
