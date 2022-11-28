@@ -61,28 +61,5 @@ public class CreateTextFiles {
 		}
 
 	}
-	public static void createInvertedIndexMap() throws IOException {
-		ArrayList<String> FileNameArray = new ArrayList<String>();
-
-		String textFilesDirectoryPath = Constants.PROJECT_PATH + "/resources/textFiles/"; // directory path to text
-																							// files
-
-		File textFilesDirectory = new File(textFilesDirectoryPath);// Creating file object
-
-		File[] listOfAllHtmlFiles = textFilesDirectory.listFiles(); // returns files in directory
-		int i = 0;
-		// iterates through list of files in the directory
-		for (File file : listOfAllHtmlFiles) {
-			String fileNameArray2 = file.getPath();
-			FileNameArray.add(fileNameArray2.toString());
-			i = i + 1;
-
-		}
-		CreateInvertedIndex index = new CreateInvertedIndex(FileNameArray); // Creates CreateInvertedIndex object
-		String[] inpArray = { "cashback"};
-		for (String inp : inpArray) {
-			index.findIndex(inp);
-		}
-	}
-
+	
 }

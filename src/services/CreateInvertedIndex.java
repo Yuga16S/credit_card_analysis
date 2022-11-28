@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import helpers.Constants;
 import model.Posting;
 import model.WordFrequency;
 
@@ -39,6 +40,28 @@ public class CreateInvertedIndex {
 			fileArray[file_index] = new File(fileNameArray.get(file_index)); // creates a new file and adds it to
 																				// fileArray
 			createFileindex(file_index); // calls indexFile() method by passing File Index as parameter
+		}
+	}
+	public static void createInvertedIndexMap(ArrayList<String>inpArray) throws IOException {
+		ArrayList<String> FileNameArray = new ArrayList<String>();
+
+		String textFilesDirectoryPath = Constants.PROJECT_PATH + "/resources/textFiles/"; // directory path to text
+																							// files
+
+		File textFilesDirectory = new File(textFilesDirectoryPath);// Creating file object
+
+		File[] listOfAllHtmlFiles = textFilesDirectory.listFiles(); // returns files in directory
+		int i = 0;
+		// iterates through list of files in the directory
+		for (File file : listOfAllHtmlFiles) {
+			String fileNameArray2 = file.getPath();
+			FileNameArray.add(fileNameArray2.toString());
+			i = i + 1;
+
+		}
+		CreateInvertedIndex index = new CreateInvertedIndex(FileNameArray); // Creates CreateInvertedIndex object
+		for (String inp : inpArray) {
+			index.findIndex(inp);
 		}
 	}
 
