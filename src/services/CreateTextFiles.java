@@ -79,7 +79,7 @@ public class CreateTextFiles {
 
 		}
 		CreateInvertedIndex index = new CreateInvertedIndex(FileNameArray); // Creates CreateInvertedIndex object
-		String[] inpArray = { "bmo","nofee","low interest"};
+		String[] inpArray = { "cashback"};
 		for (String inp : inpArray) {
 			index.findIndex(inp);
 		}

@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -6,8 +7,10 @@ import java.util.Scanner;
 import helpers.Constants;
 import helpers.Util;
 import model.CreditCard;
+import model.WordFrequency;
 import services.WebDriverService;
 import services.CreditCardFetcher;
+import services.CreditCardRanking;
 import services.KeyWordService;
 import services.WebCrawler;
 import services.CreateInvertedIndex;
@@ -56,20 +59,45 @@ public class MainApplication {
 			
 			
 			// temp test code for reading input
-			System.out.println("Please enter your keywords (comma separated) and hit the return key to proceed ...");
+			System.out.println("Please enter your keyword and hit the return key to proceed ...");
 			
 			String inputLine = scanner.nextLine();
 			String[] inputKeyWords = inputLine.split(",");
 			KeyWordService.saveKeywords(Util.listify(inputKeyWords));
 			
-			// Simulating the pending work below
-//			System.out.println("Based on your search, we recommend you " + creditCards.get(0).getName());
 			
 			// riteesh code will execute to create text files from html files and store them in resources -> TextFiles
 			CreateTextFiles.createFiles(); // function to create text files
 			CreateTextFiles.createInvertedIndexMap(); // function to create inverted frequency map
 			
-			System.out.println("Do you want to start over? (Please press y to continue)");
+			// Kartik Attri's code for ranking credit cards
+			ArrayList<String> finalCreditCard = CreditCardRanking.getCreditCard();
+			ArrayList<CreditCard> finalCreditCardNames = new ArrayList<CreditCard>();
+
+			
+			// looping over finalCreditCard
+			for(int i=0; i<finalCreditCard.size(); i++) {
+				String name = finalCreditCard.get(i).toString();
+				//finding credit card in map
+				for(CreditCard key : creditCardPagesMap.keySet()) {
+					List<String> freqList = creditCardPagesMap.get(key);
+					for(int j=0; j<freqList.size(); j++) {
+						String value = (freqList.get(j)+".txt").toString();
+						if(name.equalsIgnoreCase(value)) {
+							finalCreditCardNames.add(key);
+						}
+					}
+				}
+			}
+
+			
+			// print best credit cards for user
+			System.out.print(" *****************According to your entered keyword,below is/are Best Credit Card(s) we duggest for you ************* "+"\n\n");
+			for(CreditCard creditCard: finalCreditCardNames) {
+
+				System.out.print(creditCard.getName()+"\n");
+			}
+			
 			String response = scanner.nextLine();
 			runAgain = "y".equals(response);
 		}

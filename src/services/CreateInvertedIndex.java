@@ -154,14 +154,17 @@ public class CreateInvertedIndex {
 
 			}
 			for (String key : finalFrequencyMap.keySet()) {
+				CreditCardRanking.invertedIndexFrequencyMap.put(key, finalFrequencyMap.get(key));
 				// search for value
 				ArrayList<WordFrequency> freqList = finalFrequencyMap.get(key);
-				for (int i = 0; i < freqList.size(); i++) {
-					System.out.print("file name = " + key + "\n");
-					System.out.println("word = " + freqList.get(i).getWord() + " ------ " + "frequency = "
-							+ freqList.get(i).getFrequency());
-
-				}
+				
+//				 printing of map can be used for debugging
+//				for (int i = 0; i < freqList.size(); i++) {
+//					System.out.print("file name = " + key + "\n");
+//					System.out.println("word = " + freqList.get(i).getWord() + " ------ " + "frequency = "
+//							+ freqList.get(i).getFrequency() + "-------- " +freqList.size());
+//
+//				}
 			}
 
 			return;
